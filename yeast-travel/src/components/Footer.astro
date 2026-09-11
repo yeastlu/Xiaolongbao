@@ -1,0 +1,29 @@
+---
+import BrandMark from "./BrandMark.astro";
+---
+<footer>
+  <div class="shell footer-grid">
+    <div>
+      <BrandMark />
+      <p>China plans that hold up in real life.</p>
+    </div>
+    <div class="links">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/partner-disclosure">Partner disclosure</a>
+      <a href="/request-route">Request a human-led route</a>
+      <a href="mailto:hello@yeast.travel">hello@yeast.travel</a>
+    </div>
+  </div>
+  <div class="shell bottom">© 2026 Yeast Travel · Plan, wander, let the city rise.</div>
+</footer>
+
+<style>
+  footer { margin-top: 80px; padding: 54px 0 28px; border-top: 1px solid var(--line); background: rgba(255,255,255,.48); }
+  .footer-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; }
+  p { margin: 22px 0 0; color: var(--muted); }
+  .links { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); align-content: start; gap: 14px; }
+  .links a { color: var(--muted); font-size: 13px; font-weight: 700; text-underline-offset: 4px; }
+  .bottom { margin-top: 46px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+  @media (max-width: 640px) { .footer-grid { grid-template-columns: 1fr; } }
+</style>

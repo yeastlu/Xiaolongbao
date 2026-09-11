@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Shanghai Side Quest — Coming soon | Yeast Travel" description="A self-guided Shanghai city adventure by Yeast Travel, currently in field verification." noindex={true}>
+  <section class="quest shell">
+    <div><span class="tag">Coming soon · Not on sale</span><h1>Shanghai<br/><span>Side Quest</span></h1><p class="lede">Start with Shanghai’s viral postcard. Finish by seeing how the neighbourhood actually lives.</p><p>A 2–3 hour self-guided city game in English. No guide, no app download, and no need to enter private buildings. We are still testing route safety, clues, rain fallbacks and English navigation.</p><form name="side-quest-waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you"><input type="hidden" name="form-name" value="side-quest-waitlist" /><p class="hidden"><label>Do not fill this out <input name="bot-field" /></label></p><label>Email for launch updates<input type="email" name="email" autocomplete="email" required /></label><label class="consent"><input type="checkbox" name="consent" required /> Yeast Travel may email me about this product. My details will not be sent to a tour supplier.</label><button class="button button-primary" type="submit">Join the test list</button></form></div>
+    <div class="visual"><span>Observe</span><span>Choose</span><span>Unlock</span><b>?</b></div>
+  </section>
+</BaseLayout>
+<style>
+  .quest { min-height: 700px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 60px; align-items: center; padding-block: 80px; }
+  h1 { margin: 35px 0 24px; font-family: var(--display); font-size: clamp(72px,11vw,145px); font-weight: 400; line-height: .75; letter-spacing: -.07em; } h1 span { color: transparent; background: var(--gradient); background-clip: text; }
+  .quest > div > p:not(.lede) { max-width: 650px; color: var(--muted); }
+  form { max-width: 520px; display: grid; gap: 12px; margin-top: 32px; padding: 22px; border: 1px solid var(--line); border-radius: 20px; background: white; }
+  form label:not(.consent) { display: grid; gap: 6px; font-size: 11px; font-weight: 800; } input[type="email"] { min-height: 48px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); } .consent { color: var(--muted); font-size: 10px; } .hidden { display: none; }
+  .visual { position: relative; aspect-ratio: 1; border-radius: 50% 42% 47% 40%; background: var(--gradient); transform: rotate(4deg); } .visual span { position: absolute; padding: 9px 13px; border: 1px solid var(--ink); border-radius: 999px; background: var(--lime); box-shadow: 4px 4px 0 var(--ink); font-size: 11px; font-weight: 900; } .visual span:nth-child(1) { top: 20%; left: -5%; } .visual span:nth-child(2) { top: 48%; right: -5%; } .visual span:nth-child(3) { bottom: 12%; left: 10%; } .visual b { position: absolute; inset: 0; display: grid; place-items: center; color: white; font-family: var(--display); font-size: 250px; font-weight: 400; }
+  @media (max-width: 760px) { .quest { grid-template-columns: 1fr; } .visual { max-width: 390px; margin-inline: auto; } }
+</style>

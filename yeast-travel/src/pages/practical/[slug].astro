@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { practicalGuides } from "../../data/site";
+export function getStaticPaths() { return practicalGuides.map((guide) => ({ params: { slug: guide.slug }, props: { guide } })); }
+const { guide } = Astro.props;
+---
+<BaseLayout title={`${guide.title} — Yeast Travel`} description={guide.dek}>
+  <article class="guide shell">
+    <nav><a href="/">Home</a><span>→</span><span>China basics</span></nav>
+    <header><span class="eyebrow">Practical China · Updated {guide.updated}</span><h1>{guide.title}</h1><p class="lede">{guide.dek}</p></header>
+    <div class="guide-body">{guide.sections.map((section, i) => <section><span>0{i+1}</span><div><h2>{section.heading}</h2><p>{section.body}</p>{section.tips && <ul>{section.tips.map((tip) => <li>{tip}</li>)}</ul>}</div></section>)}</div>
+    <aside><strong>Keep this guide lightweight.</strong><p>Official services and app interfaces change. Recheck rules close to departure and never let a single app be your only payment, map or booking option.</p></aside>
+  </article>
+</BaseLayout>
+
+<style>
+  .guide { max-width: 900px; padding-top: 55px; }
+  nav { display: flex; gap: 8px; color: var(--muted); font-size: 11px; }
+  header { padding: 80px 0 60px; border-bottom: 1px solid var(--line); }
+  h1 { margin: 0 0 25px; font-family: var(--display); font-size: clamp(58px,9vw,110px); font-weight: 400; line-height: .88; letter-spacing: -.06em; }
+  .guide-body { padding: 30px 0; }
+  .guide-body section { display: grid; grid-template-columns: 80px 1fr; gap: 20px; padding: 38px 0; border-bottom: 1px dashed var(--line); }
+  .guide-body section > span { color: var(--coral); font-family: var(--display); font-size: 28px; }
+  h2 { margin: 0 0 12px; font-family: var(--display); font-size: 39px; font-weight: 400; } .guide-body p { color: var(--muted); } li { margin-bottom: 7px; }
+  aside { margin-top: 24px; padding: 24px; border-radius: 18px; background: var(--lime); transform: rotate(-1deg); } aside p { margin: 7px 0 0; font-size: 13px; }
+  @media (max-width: 500px) { .guide-body section { grid-template-columns: 40px 1fr; } }
+</style>
