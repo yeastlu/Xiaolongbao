@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yeast-travel.netlify.app/sitemap-index.xml
+Sitemap: https://yeast-travel.lilac9406.chatgpt.site/sitemap-index.xml
