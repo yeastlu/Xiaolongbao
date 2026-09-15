@@ -1,0 +1,100 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PlanBuilder from "../components/PlanBuilder.astro";
+import CityCard from "../components/CityCard.astro";
+import { cities } from "../data/content";
+import { practicalGuides } from "../data/site";
+---
+<BaseLayout title="Yeast Travel — China plans you can actually follow" description="Tell us where you’re going and how many days you have. Get a practical, bilingual China itinerary built from researched routes.">
+  <section class="hero shell">
+    <div class="hero-copy">
+      <span class="eyebrow">China, without the planning spiral</span>
+      <h1 class="display">Let the city<br/><span class="gradient-text">rise around you.</span></h1>
+      <p class="lede">Tell us where you’re going and how many days you have. Get a China trip you can actually follow — paced, bilingual and ready for real streets.</p>
+      <div class="hero-actions"><a class="button button-primary" href="#planner">Build my plan</a><a class="text-link" href="#cities">See the four cities ↓</a></div>
+      <p class="trust">No login · No generic AI routes · Free to use</p>
+    </div>
+    <div class="hero-art" aria-label="Yeast Travel logo and four launch cities">
+      <span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span>
+      <div class="logo-poster"><img src="/assets/yeast-travel-mark.png" alt="Yeast Travel" width="600" height="600" /></div>
+      <div class="city-orbit"><span>上海</span><span>杭州</span><span>苏州</span><span>景德镇</span></div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div>REALISTIC DAYS · CHINESE ADDRESSES · RAIN PLANS · MAP LINKS · REALISTIC DAYS · CHINESE ADDRESSES · RAIN PLANS · MAP LINKS ·</div></div>
+
+  <section class="section shell"><PlanBuilder /></section>
+
+  <section class="section shell cities" id="cities">
+    <div class="section-head"><div><span class="eyebrow">Four places to begin</span><h2>One region.<br/>Four different rhythms.</h2></div><p>Start with the city that matches your time. Each one has three researched day modules, so a two-day plan means two days that already fit together.</p></div>
+    <div class="grid-4">{cities.map((city) => <CityCard city={city} />)}</div>
+  </section>
+
+  <section class="section process" id="how-it-works">
+    <div class="shell">
+      <span class="eyebrow">How Yeast works</span>
+      <h2>Less generating.<br/>More going.</h2>
+      <div class="grid-3 steps">
+        <article><span>01</span><h3>Pick your shape</h3><p>City, 1–3 days, and up to two interests. That is enough to begin.</p></article>
+        <article><span>02</span><h3>Follow a real sequence</h3><p>Stops come in a planned order with time, Chinese addresses, map links and alternatives.</p></article>
+        <article><span>03</span><h3>Change without breaking it</h3><p>Rain, Mondays and sold-out entries have a named fallback, so the whole day does not collapse.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section shell experiences">
+    <div class="section-head"><div><span class="eyebrow">When you want more</span><h2>Free plans first.<br/>Paid experiences, clearly labelled.</h2></div><p>Nothing is mixed into your route secretly. A paid or affiliate recommendation will always name who fulfils it and how Yeast may earn.</p></div>
+    <div class="experience-grid">
+      <a class="experience-card quest-card" href="/experiences/shanghai-side-quest"><span class="tag">Coming soon · Yeast original</span><h3>Shanghai<br/>Side Quest</h3><p>A self-guided neighbourhood adventure currently in field testing. Preview only — no purchase button.</p><b>See the preview →</b></a>
+      <a class="experience-card human-card" href="/request-route"><span class="tag">Interest request · No payment</span><h3>Ask for a<br/>human-led route</h3><p>Tell Yeast what you need. We review it first and never send your contact to an unnamed operator.</p><b>Request a route →</b></a>
+    </div>
+  </section>
+
+  <section class="section shell basics">
+    <div class="section-head"><div><span class="eyebrow">Before you land</span><h2>China basics,<br/>minus the drama.</h2></div><p>Short practical guides for the four friction points that affect an otherwise good day.</p></div>
+    <div class="grid-4">{practicalGuides.map((guide, i) => <a class="basic-card" href={`/practical/${guide.slug}`}><span>0{i+1}</span><h3>{guide.title}</h3><p>{guide.dek}</p><b>Read guide →</b></a>)}</div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { min-height: 730px; display: grid; grid-template-columns: 1.08fr .92fr; align-items: center; gap: 34px; padding-block: clamp(54px,8vw,110px); }
+  .hero-copy { position: relative; z-index: 2; min-width: 0; }
+  .hero .display { max-width: 760px; }
+  .hero-actions { display: flex; align-items: center; gap: 24px; margin-top: 34px; }
+  .trust { margin: 17px 0 0; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .hero-art { position: relative; height: 610px; }
+  .logo-poster { position: absolute; width: min(510px,100%); aspect-ratio: 1; right: -8%; top: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.9); border-radius: 47% 43% 48% 42%; background: white; box-shadow: 0 35px 90px rgba(71,46,113,.18); transform: rotate(4deg); }
+  .logo-poster img { width: 82%; height: 82%; margin: 9%; object-fit: contain; }
+  .city-orbit { position: absolute; left: 0; bottom: 46px; display: grid; grid-template-columns: repeat(2,auto); gap: 8px; transform: rotate(-5deg); }
+  .city-orbit span { padding: 10px 14px; border: 1px solid var(--ink); border-radius: 999px; background: var(--lime); font-size: 12px; font-weight: 900; box-shadow: 4px 4px 0 var(--ink); }
+  .city-orbit span:nth-child(2), .city-orbit span:nth-child(3) { background: var(--sky); }
+  .bubble { position: absolute; border-radius: 50%; background: var(--coral); animation: float 5s ease-in-out infinite; }
+  .b1 { width: 22px; height: 22px; left: 8%; top: 13%; } .b2 { width: 11px; height: 11px; right: 1%; top: 8%; animation-delay: -2s; } .b3 { width: 34px; height: 34px; right: 3%; bottom: 16%; background: var(--violet); animation-delay: -3s; }
+  @keyframes float { 50% { transform: translateY(-13px) scale(1.08); } }
+  .marquee { overflow: hidden; padding: 13px 0; color: white; background: var(--ink); transform: rotate(-1deg); }
+  .marquee div { width: max-content; font-size: 11px; font-weight: 850; letter-spacing: .16em; word-spacing: .6em; }
+  .section-head { display: grid; grid-template-columns: 1.25fr .75fr; gap: 60px; align-items: end; margin-bottom: 46px; }
+  .section-head h2, .process h2 { margin: 0; font-family: var(--display); font-size: clamp(45px,6vw,82px); font-weight: 400; letter-spacing: -.05em; line-height: .95; }
+  .section-head > p { margin: 0; color: var(--muted); }
+  .process { color: white; background: var(--ink); }
+  .process .eyebrow { color: var(--lime); }
+  .steps { margin-top: 55px; }
+  .steps article { padding-top: 22px; border-top: 1px solid rgba(255,255,255,.25); }
+  .steps span { color: var(--coral); font-family: var(--display); font-size: 24px; }
+  .steps h3 { margin: 46px 0 12px; font-family: var(--display); font-size: 33px; font-weight: 400; }
+  .steps p { color: rgba(255,255,255,.65); font-size: 14px; }
+  .basic-card { min-height: 310px; padding: 22px; border: 1px solid var(--line); border-radius: 80px 24px 24px; background: rgba(255,255,255,.62); text-decoration: none; transition: .2s ease; }
+  .basic-card:hover { transform: translateY(-6px) rotate(-1deg); box-shadow: var(--shadow); }
+  .basic-card > span { color: var(--coral); font-family: var(--display); font-size: 28px; }
+  .basic-card h3 { margin: 56px 0 14px; font-family: var(--display); font-size: 28px; font-weight: 400; line-height: 1; }
+  .basic-card p { color: var(--muted); font-size: 12px; }
+  .basic-card b { display: block; margin-top: 22px; font-size: 11px; }
+  .experience-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+  .experience-card { position: relative; min-height: 440px; padding: clamp(28px,5vw,54px); overflow: hidden; border-radius: var(--radius); text-decoration: none; }
+  .experience-card::after { content: ""; position: absolute; width: 240px; height: 240px; right: -70px; bottom: -80px; border-radius: 50%; background: rgba(255,255,255,.18); }
+  .quest-card { color: white; background: var(--gradient); } .human-card { border: 1px solid var(--line); background: var(--lime); }
+  .experience-card h3 { margin: 90px 0 20px; font-family: var(--display); font-size: clamp(46px,6vw,76px); font-weight: 400; line-height: .86; letter-spacing: -.045em; }
+  .experience-card p { max-width: 45ch; font-size: 14px; opacity: .76; } .experience-card b { position: absolute; left: clamp(28px,5vw,54px); bottom: 40px; z-index: 1; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+  @media (max-width: 880px) { .hero { grid-template-columns: 1fr; } .hero-art { height: 480px; } .logo-poster { right: 0; width: 450px; } .section-head { grid-template-columns: 1fr; gap: 20px; } .experience-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 540px) { .hero { min-height: auto; padding-top: 35px; } .hero .display { font-size: 50px; overflow-wrap: anywhere; } .hero .lede { width: 100%; max-width: 100%; font-size: 17px; } .hero-art { height: 360px; min-width: 0; } .logo-poster { right: -28px; width: 330px; } .hero-actions { align-items: flex-start; flex-direction: column; } .city-orbit { bottom: 8px; } }
+</style>

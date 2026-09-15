@@ -1,0 +1,86 @@
+---
+import { interestLabels } from "../data/site";
+const cities = [
+  ["shanghai", "Shanghai · 上海"], ["hangzhou", "Hangzhou · 杭州"],
+  ["suzhou", "Suzhou · 苏州"], ["jingdezhen", "Jingdezhen · 景德镇"],
+];
+---
+<section class="planner card" id="planner" aria-labelledby="planner-title">
+  <div class="planner-copy">
+    <span class="eyebrow">The itinerary starter</span>
+    <h2 id="planner-title">Where are you going?</h2>
+    <p>Choose one city, your time, and up to two interests. We’ll assemble a route from plans we have already researched.</p>
+  </div>
+  <form id="plan-form">
+    <fieldset>
+      <legend>1 · City</legend>
+      <div class="choice-grid city-choices">
+        {cities.map(([value, label], index) => <label><input type="radio" name="city" value={value} checked={index === 0} /><span>{label}</span></label>)}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>2 · Time</legend>
+      <div class="choice-grid days-choices">
+        {[1,2,3].map((day, index) => <label><input type="radio" name="days" value={day} checked={index === 1} /><span><strong>{day}</strong> {day === 1 ? "day" : "days"}</span></label>)}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>3 · Your flavour <small>pick up to two</small></legend>
+      <div class="choice-grid interest-choices">
+        {Object.entries(interestLabels).map(([value, label]) => <label><input type="checkbox" name="interest" value={value} /><span>{label}</span></label>)}
+      </div>
+      <p class="form-hint" id="interest-hint" aria-live="polite"></p>
+    </fieldset>
+    <button class="button button-primary submit" type="submit">Make my China plan <span aria-hidden="true">→</span></button>
+    <p class="privacy-note">No account. Your choices stay in this browser.</p>
+  </form>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#plan-form");
+  const checks = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="interest"]'));
+  const hint = document.querySelector<HTMLElement>("#interest-hint");
+  checks.forEach((check) => check.addEventListener("change", () => {
+    const selected = checks.filter((item) => item.checked);
+    if (selected.length > 2) {
+      check.checked = false;
+      if (hint) hint.textContent = "Two is the maximum — it keeps the plan realistic.";
+    } else if (hint) hint.textContent = selected.length ? `${selected.length} of 2 selected` : "";
+  }));
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const city = String(data.get("city") || "shanghai");
+    const days = String(data.get("days") || "2");
+    const selected = data.getAll("interest").map(String).slice(0, 2);
+    const query = selected.length ? `?interests=${selected.join(",")}` : "";
+    try { localStorage.setItem("yeast-plan", JSON.stringify({ city, days, interests: selected })); } catch {}
+    window.yeastTrack?.("plan_generated", { city, days, interests: selected.join("|") });
+    window.location.href = `/cities/${city}/${days}-day-plan${query}`;
+  });
+</script>
+
+<style>
+  .planner { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(32px,6vw,86px); padding: clamp(26px,5vw,64px); background: rgba(255,255,255,.8); }
+  .planner-copy { align-self: start; position: sticky; top: 20px; }
+  h2 { margin-bottom: 18px; font-family: var(--display); font-size: clamp(42px,5vw,72px); font-weight: 400; line-height: .98; letter-spacing: -.045em; }
+  .planner-copy p { color: var(--muted); font-size: 16px; }
+  form { display: grid; gap: 30px; }
+  fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+  legend { margin-bottom: 12px; font-size: 12px; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+  legend small { margin-left: 5px; color: var(--muted); font-size: 10px; font-weight: 650; text-transform: none; letter-spacing: 0; }
+  .choice-grid { display: grid; gap: 8px; }
+  .city-choices, .interest-choices { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .days-choices { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  label { cursor: pointer; }
+  label input { position: absolute; opacity: 0; pointer-events: none; }
+  label span { min-height: 48px; display: flex; align-items: center; justify-content: center; padding: 10px; border: 1px solid var(--line); border-radius: 15px; background: var(--paper); font-size: 12px; font-weight: 750; text-align: center; transition: .18s ease; }
+  label input:checked + span { color: white; border-color: transparent; background: var(--gradient); box-shadow: 0 7px 18px rgba(112,124,255,.2); transform: translateY(-1px); }
+  label input:focus-visible + span { outline: 3px solid var(--lime); outline-offset: 2px; }
+  .days-choices strong { margin-right: 5px; font-family: var(--display); font-size: 26px; font-weight: 500; }
+  .form-hint { min-height: 18px; margin: 8px 0 0; color: var(--coral-dark); font-size: 11px; font-weight: 750; }
+  .submit { width: 100%; min-height: 58px; }
+  .privacy-note { margin: -18px 0 0; color: var(--muted); font-size: 10px; text-align: center; }
+  @media (max-width: 760px) { .planner { grid-template-columns: 1fr; } .planner-copy { position: static; } }
+  @media (max-width: 420px) { .city-choices, .interest-choices { grid-template-columns: 1fr; } }
+</style>

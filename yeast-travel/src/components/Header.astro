@@ -1,0 +1,28 @@
+---
+import BrandMark from "./BrandMark.astro";
+---
+<header class="site-header">
+  <div class="shell header-inner">
+    <BrandMark />
+    <nav aria-label="Main navigation">
+      <a href="/#cities">Cities</a>
+      <a href="/#how-it-works">How it works</a>
+      <a href="/practical/maps-in-china">China basics</a>
+    </nav>
+    <a class="button button-dark plan-button" href="/#planner">Build my plan</a>
+  </div>
+</header>
+
+<style>
+  .site-header { position: relative; z-index: 10; padding-block: 18px; }
+  .header-inner { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); align-items: center; }
+  nav { display: flex; gap: 28px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 750; }
+  nav a:hover { color: var(--ink); }
+  .plan-button { justify-self: end; min-height: 42px; padding-block: 8px; }
+  @media (max-width: 780px) {
+    .header-inner { grid-template-columns: minmax(0,1fr) auto; }
+    nav { display: none; }
+    .plan-button { min-height: 40px; padding-inline: 14px; font-size: 12px; }
+  }
+</style>

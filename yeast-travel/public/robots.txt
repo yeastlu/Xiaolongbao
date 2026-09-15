@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://effervescent-squirrel-8e44a1.netlify.app/sitemap-index.xml

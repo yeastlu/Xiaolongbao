@@ -1,0 +1,21 @@
+---
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+---
+<a class:list={["brand", { compact }]} href="/" aria-label="Yeast Travel home">
+  <span class="logo-window" aria-hidden="true">
+    <img src="/assets/yeast-travel-mark.png" alt="" width="600" height="600" />
+  </span>
+  <span class="wordmark"><strong>Yeast</strong><small>Travel · 酵母旅行</small></span>
+</a>
+
+<style>
+  .brand { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; }
+  .logo-window { width: 48px; height: 48px; overflow: hidden; border-radius: 15px; background: white; box-shadow: 0 5px 18px rgba(54,35,91,.12); }
+  .logo-window img { width: 42px; height: 42px; margin: 3px; object-fit: contain; }
+  .wordmark { display: grid; line-height: 1; }
+  .wordmark strong { font-family: var(--display); font-size: 25px; font-weight: 500; letter-spacing: -.04em; }
+  .wordmark small { margin-top: 6px; color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+  .compact .wordmark { display: none; }
+  @media (max-width: 440px) { .wordmark { display: none; } }
+</style>

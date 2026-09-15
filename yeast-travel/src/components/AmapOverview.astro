@@ -1,0 +1,40 @@
+---
+import type { RouteModule } from "../data/types";
+interface Props { route: RouteModule; }
+const { route } = Astro.props;
+const points = route.stops.filter((stop) => stop.coordinates).map((stop) => ({ name: stop.name, position: stop.coordinates }));
+const key = import.meta.env.PUBLIC_AMAP_KEY;
+const securityCode = import.meta.env.PUBLIC_AMAP_SECURITY_CODE;
+const mapId = `amap-${route.slug}`;
+const enabled = Boolean(key && securityCode && points.length);
+---
+<section class="map-shell" aria-label="Route map overview">
+  <div class="map-copy"><span class="eyebrow">Route overview</span><h2>{enabled ? "See the whole sequence." : "Map optional. Addresses essential."}</h2><p>{enabled ? "This map uses the pre-approved stop order and never asks for your live location." : "The Amap key is not configured in this preview. Every stop below still has a Chinese address and a direct map link."}</p></div>
+  {enabled ? <div class="map" id={mapId}></div> : <div class="fallback">{route.stops.map((stop, i) => <span><b>{i+1}</b>{stop.nameZh}</span>)}</div>}
+</section>
+{enabled && <script is:inline define:vars={{ mapId, points, key, securityCode }}>
+  // @ts-nocheck — Amap and define:vars are injected at runtime.
+  window._AMapSecurityConfig = { securityJsCode: securityCode };
+  const script = document.createElement('script');
+  script.src = `https://webapi.amap.com/maps?v=2.0&key=${encodeURIComponent(key)}`;
+  script.async = true;
+  script.onload = () => {
+    const map = new window.AMap.Map(mapId, { zoom: 13, resizeEnable: true, viewMode: '2D' });
+    const markers = points.map((point, index) => new window.AMap.Marker({ position: point.position, label: { content: String(index + 1), direction: 'top' }, title: point.name }));
+    map.add(markers);
+    if (points.length > 1) map.add(new window.AMap.Polyline({ path: points.map((point) => point.position), strokeColor: '#ff5d55', strokeWeight: 5, strokeOpacity: .8 }));
+    map.setFitView(markers, false, [45,45,45,45]);
+  };
+  script.onerror = () => document.getElementById(mapId)?.classList.add('map-failed');
+  document.head.appendChild(script);
+</script>}
+
+<style>
+  .map-shell { display: grid; grid-template-columns: .7fr 1.3fr; gap: 28px; margin-bottom: 34px; padding: 28px; border-radius: var(--radius); color: white; background: var(--ink); }
+  .map-copy { padding: 12px; } .map-copy .eyebrow { color: var(--lime); } .map-copy h2 { margin: 45px 0 15px; font-family: var(--display); font-size: 43px; font-weight: 400; line-height: .94; } .map-copy p { color: rgba(255,255,255,.65); font-size: 12px; }
+  .map, .fallback { min-height: 300px; overflow: hidden; border-radius: 20px; background: var(--paper); }
+  .fallback { display: grid; align-content: center; gap: 10px; padding: 26px; color: var(--ink); }
+  .fallback span { display: flex; align-items: center; gap: 12px; padding-bottom: 9px; border-bottom: 1px dashed var(--line); font-size: 13px; } .fallback b { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; color: white; background: var(--gradient); font-size: 9px; }
+  .map-failed::after { content: "Map could not load. Use the Chinese addresses below."; display: grid; height: 100%; place-items: center; padding: 20px; color: var(--ink); text-align: center; }
+  @media (max-width: 720px) { .map-shell { grid-template-columns: 1fr; } .map-copy h2 { margin-top: 18px; } }
+</style>
